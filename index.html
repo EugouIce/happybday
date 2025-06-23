@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday 🎂🎈</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #ffe5ec, #ffb3c1);
+    position: relative;
+    overflow: hidden;
+}
+h1 {
+    font-size: 2.5rem;
+    color: #ff467f;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 1s ease, transform 1s ease;
+}
+h1.show {
+    opacity: 1;
+    transform: scale(1);
+}
+.input-box {
+    margin: 20px 0;
+    transition: opacity 0.5s ease;
+}
+.input-box.hidden {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+}
+input {
+    font-size: 1rem;
+    padding: 12px 16px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    text-align: center;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+}
+input:focus {
+    box-shadow: 0 0 30px rgba(255, 105, 180, 0.6), 0 0 10px rgba(255, 105, 180, 0.3);
+    transform: scale(1.03);
+}
+button {
+    font-size: 1rem;
+    padding: 8px 16px;
+    margin-left: 10px;
+    border-radius: 6px;
+    border: none;
+    background-color: #ff467f;
+    color: #fff;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #ff285f;
+}
+#greeting {
+    font-size: 1.5rem;
+    margin: 30px;
+    color: #333;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+#greeting.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.confetti {
+    position: absolute;
+    font-size: 20px;
+    pointer-events: none;
+    animation: fall 3s linear;
+}
+@keyframes fall {
+    0% { transform: translateY(-100px) scale(1); opacity: 1; }
+    100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+}
+
+/* Image Styles */
+.image-wrapper {
+    position: relative;
+    display: none;
+    justify-content: center;
+    margin: 30px 0;
+}
+.image-wrapper.show {
+    display: flex;
+    animation: fadeIn 1s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+.image-wrapper .center-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #ff69b4;
+    box-shadow: 0 0 30px rgba(255, 105, 180, 0.8);
+    animation: pulseGlow 2s infinite;
+}
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 30px rgba(255, 105, 180, 0.8); }
+    50% { box-shadow: 0 0 60px rgba(255, 105, 180, 1); }
+    100% { box-shadow: 0 0 30px rgba(255, 105, 180, 0.8); }
+}
+.plush {
+    position: absolute;
+    width: 140px;
+    height: 130px;
+}
+.plush1 { bottom: 20px; right:57%; transform: rotate(-8deg);}
+.plush2 { bottom: 5px; left: 56%; transform: rotate(8deg); }
+.plush3 { width: 160px; bottom: -13px; right: 52.2%; }
+.plush4 { bottom: -23px; left: 53%; }
+.plush5 { bottom: -45px; right: 50%; }
+.plush6 { bottom: -45px; left: 49%; }
+</style>
+</head>
+<body>
+
+<!-- HIDDEN MAIN TITLE -->
+<h1 id="mainTitle">🎂 Happy Birthday! 🎈</h1>
+
+<!-- INPUT -->
+<div class="input-box" id="inputBox">
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <button id="submitBtn">Click Here</button>
+</div>
+
+<!-- GREETING -->
+<div id="greeting"></div>
+
+<!-- IMAGE WRAPPER -->
+<div class="image-wrapper">
+    <img src="irish.jpg" alt="Person" class="center-image">
+    <img src="plush1.png" alt="Plush 1" class="plush plush1">
+    <img src="plush2.png" alt="Plush 2" class="plush plush2">
+    <img src="plush3.png" alt="Plush 3" class="plush plush3">
+    <img src="plush4.png" alt="Plush 4" class="plush plush4">
+    <img src="plush5.png" alt="Plush 5" class="plush plush5">
+    <img src="plush6.png" alt="Plush 6" class="plush plush6">
+</div>
+
+<!-- 🎵 Audio for Birthday Song -->
+<audio id="birthdaySong" src="happybirthday.mp3"></audio>
+
+<script>
+const button = document.getElementById("submitBtn");
+const nameInput = document.getElementById("nameInput");
+const greeting = document.getElementById("greeting");
+const birthdaySong = document.getElementById("birthdaySong");
+const imageWrapper = document.querySelector('.image-wrapper');
+const inputBox = document.getElementById("inputBox");
+const mainTitle = document.getElementById("mainTitle");
+
+const emojis = ["🎉", "🎊", "🎈", "🥳", "🌟", "💖", "🎁"];
+let confettiInterval;
+
+function createConfetti() {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    confetti.style.left = Math.random() * window.innerWidth + 'px';
+    confetti.style.fontSize = (15 + Math.random() * 15) + 'px';
+    document.body.appendChild(confetti);
+
+    setTimeout(() => {
+        confetti.remove();
+    }, 3000);
+}
+
+button.addEventListener("click", () => {
+    const name = nameInput.value.trim();
+    if (name) {
+        greeting.innerHTML = `🥳 Happy Birthday, ${name}!<br>May your special day be filled with joy, laughter, and unforgettable moments! 🌟`;
+        greeting.classList.remove('show');
+        void greeting.offsetWidth;
+        greeting.classList.add('show');
+
+        // START Confetti
+        if (!confettiInterval) {
+            confettiInterval = setInterval(createConfetti, 300);
+        }
+
+        // START Music
+        birthdaySong.currentTime = 0;
+        birthdaySong.play();
+
+        // SHOW IMAGE WRAPPER
+        imageWrapper.classList.add('show');
+
+        // HIDE INPUT
+        inputBox.classList.add('hidden');
+
+        // SHOW MAIN TITLE
+        mainTitle.classList.add('show');
+    } else {
+        greeting.innerHTML = "👉 Please enter your name to make it special.";
+        greeting.classList.remove('show');
+    }
+});
+
+// Event listener for typing
+nameInput.addEventListener('input', function() {
+    if (nameInput.value.trim() === '') {
+        greeting.innerHTML = ""; 
+    }
+});
+</script>
+</body>
+</html>
