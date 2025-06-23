@@ -182,28 +182,37 @@ function createConfetti() {
 button.addEventListener("click", () => {
     const name = nameInput.value.trim();
     if (name) {
-        greeting.innerHTML = `🥳 Happy Birthday, ${name}!<br>May your special day be filled with joy, laughter, and unforgettable moments! 🌟`;
-        greeting.classList.remove('show');
-        void greeting.offsetWidth;
-        greeting.classList.add('show');
+        if (name === "Irish Mae Macaraeg") {
+            // ✅ It's the right name
+            greeting.innerHTML = `🥳 Happy Birthday, ${name}!<br>May your special day be filled with joy, laughter, and unforgettable moments! 🌟`;
+            greeting.classList.remove('show');
+            void greeting.offsetWidth;
+            greeting.classList.add('show');
 
-        // START Confetti
-        if (!confettiInterval) {
-            confettiInterval = setInterval(createConfetti, 300);
+            // START Confetti
+            if (!confettiInterval) {
+                confettiInterval = setInterval(createConfetti, 300);
+            }
+
+            // START Music
+            birthdaySong.currentTime = 0;
+            birthdaySong.play();
+
+            // SHOW IMAGE WRAPPER
+            imageWrapper.classList.add('show');
+
+            // HIDE INPUT
+            inputBox.classList.add('hidden');
+
+            // SHOW MAIN TITLE
+            mainTitle.classList.add('show');
+        } else {
+            // ❌ Not the right person
+            greeting.innerHTML = "👉 Sorry, it's not your birthday.";
+            greeting.classList.remove('show');
+            void greeting.offsetWidth;
+            greeting.classList.add('show');
         }
-
-        // START Music
-        birthdaySong.currentTime = 0;
-        birthdaySong.play();
-
-        // SHOW IMAGE WRAPPER
-        imageWrapper.classList.add('show');
-
-        // HIDE INPUT
-        inputBox.classList.add('hidden');
-
-        // SHOW MAIN TITLE
-        mainTitle.classList.add('show');
     } else {
         greeting.innerHTML = "👉 Please enter your name to make it special.";
         greeting.classList.remove('show');
