@@ -12,26 +12,19 @@ body {
     position: relative;
     overflow: hidden;
 }
-h1 {
+#mainTitle {
     font-size: 2.5rem;
     color: #ff467f;
     opacity: 0;
-    transform: scale(0.7);
-    transition: opacity 1s ease, transform 1s ease;
+    transform: scale(0.9);
+    transition: opacity 1s ease, transform 0.5s ease;
 }
-h1.show {
+#mainTitle.show {
     opacity: 1;
     transform: scale(1);
 }
 .input-box {
     margin: 20px 0;
-    transition: opacity 0.5s ease;
-}
-.input-box.hidden {
-    opacity: 0;
-    pointer-events: none;
-    height: 0;
-    overflow: hidden;
 }
 input {
     font-size: 1rem;
@@ -83,8 +76,6 @@ button:hover {
     0% { transform: translateY(-100px) scale(1); opacity: 1; }
     100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
 }
-
-/* Image Styles */
 .image-wrapper {
     position: relative;
     display: none;
@@ -119,7 +110,7 @@ button:hover {
     height: 130px;
 }
 .plush1 { bottom: 20px; right:57%; transform: rotate(-8deg);}
-.plush2 { bottom: 5px; left: 56%; transform: rotate(8deg); }
+.plush2 { bottom: 5px; left: 56%; transform: rotate(8deg);}
 .plush3 { width: 160px; bottom: -13px; right: 52.2%; }
 .plush4 { bottom: -23px; left: 53%; }
 .plush5 { bottom: -45px; right: 50%; }
@@ -128,16 +119,13 @@ button:hover {
 </head>
 <body>
 
-<!-- HIDDEN MAIN TITLE -->
 <h1 id="mainTitle">🎂 Happy Birthday! 🎈</h1>
 
-<!-- INPUT -->
 <div class="input-box" id="inputBox">
     <input type="text" id="nameInput" placeholder="Enter your name">
     <button id="submitBtn">Click Here</button>
 </div>
 
-<!-- GREETING -->
 <div id="greeting"></div>
 
 <!-- IMAGE WRAPPER -->
@@ -173,56 +161,55 @@ function createConfetti() {
     confetti.style.left = Math.random() * window.innerWidth + 'px';
     confetti.style.fontSize = (15 + Math.random() * 15) + 'px';
     document.body.appendChild(confetti);
-
     setTimeout(() => {
         confetti.remove();
     }, 3000);
 }
 
 button.addEventListener("click", () => {
-    const name = nameInput.value.trim();
-    if (name) {
-        if (name === "Irish Mae Macaraeg") {
-            // ✅ It's the right name
-            greeting.innerHTML = `🥳 Happy Birthday, ${name}!<br>May your special day be filled with joy, laughter, and unforgettable moments! 🌟`;
-            greeting.classList.remove('show');
-            void greeting.offsetWidth;
-            greeting.classList.add('show');
-
-            // START Confetti
-            if (!confettiInterval) {
-                confettiInterval = setInterval(createConfetti, 300);
-            }
-
-            // START Music
-            birthdaySong.currentTime = 0;
-            birthdaySong.play();
-
-            // SHOW IMAGE WRAPPER
-            imageWrapper.classList.add('show');
-
-            // HIDE INPUT
-            inputBox.classList.add('hidden');
-
-            // SHOW MAIN TITLE
-            mainTitle.classList.add('show');
-        } else {
-            // ❌ Not the right person
-            greeting.innerHTML = "👉 Sorry, it's not your birthday.";
-            greeting.classList.remove('show');
-            void greeting.offsetWidth;
-            greeting.classList.add('show');
-        }
-    } else {
+    const name = nameInput.value.trim().toLowerCase();
+    if (!name) {
         greeting.innerHTML = "👉 Please enter your name to make it special.";
         greeting.classList.remove('show');
+        return;
+    }
+
+    if (name === "irish mae macaraeg") {
+        // 🎉 Show greeting
+        greeting.innerHTML = `🥳 Happy Birthday, Irish Mae Macaraeg!<br>May your special day be filled with joy, laughter, and unforgettable moments! 🌟`;
+        greeting.classList.remove('show');
+        void greeting.offsetWidth;
+        greeting.classList.add('show');
+
+        // 🎈 Show main title
+        mainTitle.classList.add('show');
+
+        // 🎵 Play song
+        birthdaySong.currentTime = 0;
+        birthdaySong.play();
+
+        // 🎊 Confetti
+        if (!confettiInterval) {
+            confettiInterval = setInterval(createConfetti, 300);
+        }
+
+        // 🎁 Show image and plushies
+        imageWrapper.classList.add('show');
+
+        // Hide input
+        inputBox.style.display = 'none';
+    } else {
+        greeting.innerHTML = "👉 Sorry, it's not your birthday.";
+        greeting.classList.remove('show');
+        void greeting.offsetWidth;
+        greeting.classList.add('show');
     }
 });
 
-// Event listener for typing
+// Clear greeting on input reset
 nameInput.addEventListener('input', function() {
     if (nameInput.value.trim() === '') {
-        greeting.innerHTML = ""; 
+        greeting.innerHTML = "";
     }
 });
 </script>
