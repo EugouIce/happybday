@@ -18,12 +18,10 @@ body {
     opacity: 0;
     transform: scale(0.9);
     transition: opacity 1s ease, transform 0.5s ease;
-    display: none;
 }
 #mainTitle.show {
     opacity: 1;
     transform: scale(1);
-    display: block;
 }
 .input-box {
     margin: 20px 0;
@@ -117,11 +115,6 @@ button:hover {
 .plush4 { bottom: -23px; left: 53%; }
 .plush5 { bottom: -45px; right: 50%; }
 .plush6 { bottom: -45px; left: 49%; }
-#mainTitle.show {
-    opacity: 1;
-    transform: scale(1);
-    animation: fadeIn 1s ease;
-}
 </style>
 </head>
 <body>
@@ -155,6 +148,7 @@ const nameInput = document.getElementById("nameInput");
 const greeting = document.getElementById("greeting");
 const birthdaySong = document.getElementById("birthdaySong");
 const imageWrapper = document.querySelector('.image-wrapper');
+const inputBox = document.getElementById("inputBox");
 const mainTitle = document.getElementById("mainTitle");
 
 const emojis = ["🎉", "🎊", "🎈", "🥳", "🌟", "💖", "🎁"];
@@ -167,55 +161,58 @@ function createConfetti() {
     confetti.style.left = Math.random() * window.innerWidth + 'px';
     confetti.style.fontSize = (15 + Math.random() * 15) + 'px';
     document.body.appendChild(confetti);
-
     setTimeout(() => {
         confetti.remove();
     }, 3000);
 }
 
 button.addEventListener("click", () => {
-    const name = nameInput.value.trim();
-    const lowerName = name.toLowerCase();
-
+    const name = nameInput.value.trim().toLowerCase();
     if (!name) {
-        greeting.innerHTML = "👉 Please enter your name.";
+        greeting.innerHTML = "👉 Please enter your name to make it special.";
         greeting.classList.remove('show');
         return;
     }
 
-    if (lowerName === "irish anne macaraeg" || lowerName === "irish macaraeg") {
-        greeting.innerHTML = `🥳 Happy Birthday, Irish Anne Macaraeg!<br>May your special day be filled with joy, laughter, and unforgettable moments! 🌟`;
-        greeting.classList.remove('show');
-        void greeting.offsetWidth;
-        greeting.classList.add('show');
+    if (
+    name === "irish anne macaraeg" || 
+    name === "irish macaraeg"
+) {
+    // 🎉 Show greeting
+    greeting.innerHTML = `🥳 Happy Birthday, Irish Anne Macaraeg!<br>May your special day be filled with joy, laughter, and unforgettable moments! 🌟`;
+    greeting.classList.remove('show');
+    void greeting.offsetWidth;
+    greeting.classList.add('show');
 
-        // START Confetti
-        if (!confettiInterval) {
-            confettiInterval = setInterval(createConfetti, 300);
-        }
+    // 🎈 Show main title
+    mainTitle.classList.add('show');
 
-        // START Music
-        birthdaySong.currentTime = 0;
-        birthdaySong.play();
+    // 🎵 Play song
+    birthdaySong.currentTime = 0;
+    birthdaySong.play();
 
-        // SHOW IMAGE WRAPPER
-        imageWrapper.classList.add('show');
-
-        // SHOW MAIN TITLE
-        mainTitle.classList.add('show');
-
-        // HIDE INPUT BOX
-        document.querySelector('.input-box').style.display = 'none';
-    } else {
-        greeting.innerHTML = "👉 Sorry, it's not your birthday.";
-        greeting.classList.remove('show');
+    // 🎊 Confetti
+    if (!confettiInterval) {
+        confettiInterval = setInterval(createConfetti, 300);
     }
+
+    // 🎁 Show image and plushies
+    imageWrapper.classList.add('show');
+
+    // Hide input
+    inputBox.style.display = 'none';
+} else {
+    greeting.innerHTML = "👉 Sorry, it's not your birthday.";
+    greeting.classList.remove('show');
+    void greeting.offsetWidth;
+    greeting.classList.add('show');
+}
 });
 
-// Event listener for typing
+// Clear greeting on input reset
 nameInput.addEventListener('input', function() {
     if (nameInput.value.trim() === '') {
-        greeting.innerHTML = ""; 
+        greeting.innerHTML = "";
     }
 });
 </script>
